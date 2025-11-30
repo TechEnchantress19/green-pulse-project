@@ -81,7 +81,7 @@ python main.py
 ```
 The server will start at http://0.0.0.0:8000.
 
-📖 API Usage
+##📖 API Usage
 Once the server is running, you can access the Interactive API Docs at: 👉 http://localhost:8000/docs
 
 Endpoints
@@ -121,7 +121,7 @@ Body:
   "user_state": "Punjab"
 }
 ```
-🤝 Contributing
+##🤝 Contributing
 Contributions are welcome!
 
 1. Fork the repository.
