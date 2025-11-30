@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pandas
+numpy
+scikit-learn
+lightgbm
+xgboost
+joblib
+kagglehub
+python-multipart
+google-generativeai
+python-dotenv
+pillow
