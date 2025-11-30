@@ -81,11 +81,11 @@ python main.py
 ```
 The server will start at http://0.0.0.0:8000.
 
-##📖 API Usage
+## 📖 API Usage
 Once the server is running, you can access the Interactive API Docs at: 👉 http://localhost:8000/docs
 
 Endpoints
-1. Recommend Crop
+### 1. Recommend Crop
 URL: /recommend_crop
 
 Method: POST
@@ -102,14 +102,14 @@ Body:
   "rainfall": 202.9
 }
 ```
-2. Diagnose Disease
+### 2. Diagnose Disease
 URL: /diagnose_disease
 
 Method: POST
 
 Body: multipart/form-data (Upload an image file)
 
-3. Ask Scheme
+### 3. Ask Scheme
 URL: /ask_scheme
 
 Method: POST
@@ -121,18 +121,18 @@ Body:
   "user_state": "Punjab"
 }
 ```
-##🤝 Contributing
+## 🤝 Contributing
 Contributions are welcome!
 
-1. Fork the repository.
+### 1. Fork the repository.
 
-2. Create a new branch (```git checkout -b feature-branch```).
+### 2. Create a new branch (```git checkout -b feature-branch```).
 
-3. Commit your changes.
+### 3. Commit your changes.
 
-4. Push to the branch.
+### 4. Push to the branch.
 
-5. Open a Pull Request.
+### 5. Open a Pull Request.
 
-📄 License
+## 📄 License
 This project is licensed under the MIT License.
