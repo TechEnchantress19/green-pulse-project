@@ -124,15 +124,15 @@ Body:
 🤝 Contributing
 Contributions are welcome!
 
-Fork the repository.
+1. Fork the repository.
 
-Create a new branch (git checkout -b feature-branch).
+2. Create a new branch (```git checkout -b feature-branch```).
 
-Commit your changes.
+3. Commit your changes.
 
-Push to the branch.
+4. Push to the branch.
 
-Open a Pull Request.
+5. Open a Pull Request.
 
 📄 License
 This project is licensed under the MIT License.
