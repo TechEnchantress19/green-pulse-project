@@ -9,17 +9,17 @@
 
 ## 🚀 Key Features
 
-### 1. 🌾 High-Precision Crop Recommendation
+### 1. High-Precision Crop Recommendation
 * **Technology:** Stacked Ensemble (Random Forest + XGBoost + LightGBM).
 * **Meta-Learner:** Logistic Regression.
 * **Accuracy:** Optimized for high precision using Stratified K-Fold validation and feature scaling.
 * **Input:** N, P, K, Temperature, Humidity, pH, Rainfall.
 
-### 2. 🍂 AI Disease Diagnosis
+### 2. AI Disease Diagnosis
 * **Technology:** Google Gemini 1.5 Flash (Vision).
 * **Capability:** Analyzes leaf images to identify diseases, list symptoms, and suggest organic/chemical treatments.
 
-### 3. 📜 Government Scheme Assistant (RAG-Lite)
+### 3. Government Scheme Assistant (RAG-Lite)
 * **Technology:** Generative AI Contextual Prompting.
 * **Capability:** Answers questions about Indian government schemes (PM-KISAN, Fasal Bima Yojana) based on the user's state.
 
