@@ -15,7 +15,7 @@ app = FastAPI(title="Green Pulse AI - High Precision API")
 
 # --- DIRECT API KEY FIX ---
 # Hardcoded key to ensure it works immediately
-GENAI_KEY = "AIzaSyDv7NUAgx5mHO9aT8RKhhl2HDIudu8y5q0"
+GEMINI_API_KEY=your_actual_api_key_here
 genai.configure(api_key=GENAI_KEY)
 
 # Load AI Artifacts
