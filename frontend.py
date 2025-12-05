@@ -5,12 +5,16 @@ from googletrans import Translator
 
 # --- CONFIGURATION ---
 BACKEND_URL = "http://localhost:8000"
-st.set_page_config(page_title="Green Pulse AI", page_icon="🌿", layout="wide")
+st.set_page_config(
+    page_title="Green Pulse AI",
+    page_icon="🌿",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # --- TRANSLATION SETUP ---
 translator = Translator()
 
-# List of supported languages
 lang_options = {
     'English': 'en',
     'Hindi (हिंदी)': 'hi',
@@ -22,32 +26,28 @@ lang_options = {
     'Gujarati (ગુજરાતી)': 'gu'
 }
 
-# Sidebar Language Selector
+# --- SIDEBAR STYLING ---
+st.sidebar.image("https://img.icons8.com/color/96/000000/tractor.png", width=80)
 st.sidebar.header("🗣️ Language / ਭਾਸ਼ਾ")
-selected_lang_name = st.sidebar.selectbox(
-    "Select Language", 
-    list(lang_options.keys())
-)
+selected_lang_name = st.sidebar.selectbox("Select Language", list(lang_options.keys()))
 target_lang = lang_options[selected_lang_name]
 
-# --- TRANSLATION FUNCTION (Fix: Removed Caching) ---
+# --- TRANSLATION FUNCTION ---
 def t(text):
-    if target_lang == 'en': 
-        return text
+    if target_lang == 'en': return text
     try:
-        # Translate and return text
         return translator.translate(text, dest=target_lang).text
     except Exception as e:
-        # If it fails, print the error to the terminal and keep English
         print(f"Translation Error for '{text}': {e}")
         return text
 
-# --- HEADER ---
-st.title(t("🌿 Green Pulse AI"))
-st.markdown(f"### *{t("Farmer's Smart Assistant for Crops, Diseases & Schemes")}*")
+# --- MAIN HEADER ---
+st.markdown(f"<h1 style='text-align: center; color: #2E7D32;'>🌿 {t('Green Pulse AI')}</h1>", unsafe_allow_html=True)
+st.markdown(f"<h4 style='text-align: center; color: #555;'>* {t("Farmer's Smart Assistant for Crops, Diseases & Schemes")} *</h4>", unsafe_allow_html=True)
 st.divider()
 
-# --- SIDEBAR NAVIGATION ---
+# --- NAVIGATION ---
+st.sidebar.markdown("---")
 st.sidebar.header(t("Navigation"))
 nav_options = ["🌱 Crop Recommendation", "🍂 Disease Diagnosis", "📜 Government Schemes"]
 page = st.sidebar.radio(t("Go to:"), nav_options, format_func=t)
@@ -55,24 +55,58 @@ page = st.sidebar.radio(t("Go to:"), nav_options, format_func=t)
 # --- PAGE 1: CROP RECOMMENDATION ---
 if page == "🌱 Crop Recommendation":
     st.header(t("🌱 Precision Crop Recommendation"))
-    st.info(t("Enter the soil details below to get the best crop suggestion."))
+    st.info(t("Fill in the details below to get an AI-powered crop suggestion."))
 
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        n = st.number_input(t("Nitrogen (N)"), 0, 200, 90)
-        p = st.number_input(t("Phosphorus (P)"), 0, 200, 42)
-        k = st.number_input(t("Potassium (K)"), 0, 200, 43)
-    
-    with col2:
-        temp = st.number_input(t("Temperature (°C)"), -10.0, 60.0, 20.8)
-        humidity = st.number_input(t("Humidity (%)"), 0.0, 100.0, 82.0)
-        ph = st.number_input(t("Soil pH"), 0.0, 14.0, 6.5)
-    
-    with col3:
-        rain = st.number_input(t("Rainfall (mm)"), 0.0, 500.0, 202.9)
+    # Create two columns for better layout
+    left_col, right_col = st.columns(2)
 
-    if st.button(t("🔍 Recommend Crop")):
+    with left_col:
+        with st.container(border=True):
+            st.subheader(t("🧪 Soil Nutrients"))
+            
+            # Nitrogen
+            n = st.number_input(t("Nitrogen (N) [kg/ha]"), 0, 500, 90)
+            with st.expander(t("ℹ️ Guidelines")):
+                st.caption(t("Target: 240-480 kg/ha"))
+
+            # Phosphorus
+            p = st.number_input(t("Phosphorus (P) [kg/ha]"), 0, 300, 42)
+            with st.expander(t("ℹ️ Guidelines")):
+                st.caption(t("Target: 11-22 kg/ha"))
+            
+            # Potassium (Updated Limit: 350)
+            k = st.number_input(t("Potassium (K) [kg/ha]"), 0, 350, 43)
+            with st.expander(t("ℹ️ Guidelines")):
+                st.caption(t("Target: 110-280 kg/ha"))
+
+            # pH
+            ph = st.number_input(t("Soil pH"), 0.0, 14.0, 6.5)
+            with st.expander(t("ℹ️ Guidelines")):
+                st.caption(t("Ideal: 6.0 - 7.5"))
+
+    with right_col:
+        with st.container(border=True):
+            st.subheader(t("🌦️ Climate Conditions"))
+            
+            # Temperature
+            temp = st.number_input(t("Temperature (°C)"), -10.0, 60.0, 20.8)
+            with st.expander(t("ℹ️ Guidelines")):
+                st.caption(t("Ideal: 18°C - 30°C"))
+
+            # Humidity
+            humidity = st.number_input(t("Humidity (%)"), 0.0, 100.0, 82.0)
+            with st.expander(t("ℹ️ Guidelines")):
+                st.caption(t("Optimal: 50% - 80%"))
+
+            # Rainfall (Updated Limit: 2000)
+            rain = st.number_input(t("Rainfall (mm)"), 0.0, 2000.0, 202.9)
+            with st.expander(t("ℹ️ Guidelines")):
+                st.caption(t("Range: 300 - 1000+ mm"))
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Large Action Button
+    if st.button(t("🔍 Recommend Crop"), type="primary", use_container_width=True):
         payload = {
             "N": n, "P": p, "K": k,
             "temperature": temp, "humidity": humidity,
@@ -86,8 +120,11 @@ if page == "🌱 Crop Recommendation":
             if response.status_code == 200:
                 result = response.json()
                 crop_en = result['recommended_crop']
-                st.success(f"✅ {t('Recommended Crop')}: **{t(crop_en)}**")
-                st.metric(label=t("Confidence Score"), value=f"{result['confidence_score']*100:.2f}%")
+                st.balloons() # Fun effect!
+                
+                # Result Display
+                st.success(f"### ✅ {t('Best Crop to Grow')}: {t(crop_en)}")
+                st.progress(result['confidence_score'], text=t("Confidence Score"))
             else:
                 st.error(t("Error connecting to server. Is backend running?"))
                 
@@ -97,29 +134,33 @@ if page == "🌱 Crop Recommendation":
 # --- PAGE 2: DISEASE DIAGNOSIS ---
 elif page == "🍂 Disease Diagnosis":
     st.header(t("🍂 Plant Disease Diagnosis"))
-    st.info(t("Upload a clear photo of the affected leaf."))
+    st.warning(t("Upload a clear photo of the affected leaf for instant analysis."))
 
     uploaded_file = st.file_uploader(t("Choose an image..."), type=["jpg", "png", "jpeg"])
 
     if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        st.image(image, caption=t("Uploaded Leaf"), use_column_width=True)
-
-        if st.button(t("🧬 Diagnose Disease")):
-            files = {"file": uploaded_file.getvalue()}
-            
-            try:
-                with st.spinner(t("Consulting AI Agronomist...")):
-                    response = requests.post(f"{BACKEND_URL}/diagnose_disease", files=files)
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            image = Image.open(uploaded_file)
+            st.image(image, caption=t("Uploaded Leaf"), use_column_width=True)
+        
+        with col2:
+            if st.button(t("🧬 Diagnose Disease"), type="primary"):
+                files = {"file": uploaded_file.getvalue()}
                 
-                if response.status_code == 200:
-                    analysis_en = response.json()["analysis"]
-                    st.success(t("Analysis Complete!"))
-                    st.write(t(analysis_en))
-                else:
-                    st.error(t("Server Error. Check API Key."))
-            except Exception as e:
-                st.error(f"{t('Connection Failed')}: {e}")
+                try:
+                    with st.spinner(t("Consulting AI Agronomist...")):
+                        response = requests.post(f"{BACKEND_URL}/diagnose_disease", files=files)
+                    
+                    if response.status_code == 200:
+                        analysis_en = response.json()["analysis"]
+                        st.success(t("Analysis Complete!"))
+                        with st.container(border=True):
+                            st.markdown(t(analysis_en))
+                    else:
+                        st.error(t("Server Error. Check API Key."))
+                except Exception as e:
+                    st.error(f"{t('Connection Failed')}: {e}")
 
 # --- PAGE 3: SCHEMES ---
 elif page == "📜 Government Schemes":
@@ -129,9 +170,9 @@ elif page == "📜 Government Schemes":
     state_options = ["India", "Punjab", "Haryana", "Uttar Pradesh", "Maharashtra", "Tamil Nadu", "Other"]
     user_state = st.selectbox(t("Select Your State"), state_options, format_func=t)
     
-    question = st.text_area(t("Your Question"), t("What subsidies are available for wheat farming?"))
+    question = st.text_area(t("Your Question"), t("What subsidies are available for wheat farming?"), height=100)
 
-    if st.button(t("🤖 Ask AI")):
+    if st.button(t("🤖 Ask AI"), type="primary"):
         payload = {"question": question, "user_state": user_state}
         
         try:
@@ -140,8 +181,8 @@ elif page == "📜 Government Schemes":
             
             if response.status_code == 200:
                 answer_en = response.json()["response"]
-                st.markdown(f"### {t('AI Response:')}")
-                st.write(t(answer_en))
+                with st.chat_message("assistant"):
+                    st.markdown(t(answer_en))
             else:
                 st.error(t("Server Error."))
         except Exception as e:
@@ -149,4 +190,4 @@ elif page == "📜 Government Schemes":
 
 # --- FOOTER ---
 st.markdown("---")
-st.caption(t("Built with 💚 using Streamlit & FastAPI"))
+st.markdown(f"<div style='text-align: center; color: #888;'>{t('Built with 💚 using Streamlit & FastAPI')}</div>", unsafe_allow_html=True)
