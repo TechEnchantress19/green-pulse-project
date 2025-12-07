@@ -93,9 +93,10 @@ y_pred = clf.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f"✅ Overall Accuracy: {accuracy*100:.2f}%")
 
-# 8. Save Everything
+# 8. Save Everything with compatibility settings
 print("\n💾 Saving artifacts to 'models/'...")
-joblib.dump(clf, "models/crop_model.joblib")
-joblib.dump(le, "models/label_encoder.joblib")
-joblib.dump(scaler, "models/scaler.joblib")
+# Use protocol=4 for better cross-version compatibility
+joblib.dump(clf, "models/crop_model.joblib", protocol=4)
+joblib.dump(le, "models/label_encoder.joblib", protocol=4)
+joblib.dump(scaler, "models/scaler.joblib", protocol=4)
 print("✅ Done! You can now run main.py")

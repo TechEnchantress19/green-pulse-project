@@ -2,6 +2,14 @@ import os
 import joblib
 import uvicorn
 import numpy as np
+# Fix for numpy compatibility with joblib models
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
+warnings.filterwarnings('ignore', category=FutureWarning)
+# Suppress importlib metadata warnings
+import sys
+if not sys.warnoptions:
+    warnings.simplefilter("ignore")
 import google.generativeai as genai
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
@@ -13,20 +21,50 @@ import io
 load_dotenv()
 app = FastAPI(title="Green Pulse AI - High Precision API")
 
-# --- DIRECT API KEY FIX ---
-# Hardcoded key to ensure it works immediately
-GEMINI_API_KEY=your_actual_api_key_here
-genai.configure(api_key=GENAI_KEY)
+# --- API KEY CONFIGURATION ---
+# Load API key from environment variable
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY not found in environment variables. Please check your .env file.")
+genai.configure(api_key=GEMINI_API_KEY)
 
-# Load AI Artifacts
+# Load AI Artifacts with NumPy compatibility fix
+def load_model_safe(model_path):
+    """Load joblib model with NumPy compatibility workaround"""
+    try:
+        # Set numpy random state before loading
+        np.random.seed(42)
+        # Try normal loading first
+        return joblib.load(model_path)
+    except (ValueError, AttributeError, TypeError) as e:
+        error_str = str(e)
+        if "BitGenerator" in error_str or "MT19937" in error_str:
+            # NumPy version incompatibility - model needs to be retrained
+            raise ValueError(
+                f"Model compatibility issue detected: {e}\n"
+                "The model was saved with a different NumPy version.\n"
+                "Solution: Retrain the model by running: python3 train_model.py"
+            )
+        else:
+            raise e
+
 try:
-    crop_model = joblib.load("models/crop_model.joblib")
-    label_encoder = joblib.load("models/label_encoder.joblib")
-    scaler = joblib.load("models/scaler.joblib") 
+    crop_model = load_model_safe("models/crop_model.joblib")
+    label_encoder = load_model_safe("models/label_encoder.joblib")
+    scaler = load_model_safe("models/scaler.joblib")
     print("✅ High-Precision Models Loaded Successfully.")
-except FileNotFoundError:
-    print("❌ ERROR: Models not found. You MUST run 'train_model.py' first.")
+except FileNotFoundError as e:
+    print(f"❌ ERROR: Models not found. You MUST run 'train_model.py' first. {e}")
     crop_model = None
+    label_encoder = None
+    scaler = None
+except Exception as e:
+    print(f"❌ ERROR: Failed to load models. {e}")
+    print("💡 Tip: This might be a version compatibility issue. Try retraining the model with:")
+    print("   python3 train_model.py")
+    crop_model = None
+    label_encoder = None
+    scaler = None
 
 # --- 2. DATA STRUCTURES ---
 class CropInput(BaseModel):
@@ -51,8 +89,11 @@ def health_check():
 # 🌱 CROP RECOMMENDATION
 @app.post("/recommend_crop")
 def recommend_crop(data: CropInput):
-    if not crop_model:
-        raise HTTPException(status_code=500, detail="Model is not loaded.")
+    if not crop_model or not label_encoder or not scaler:
+        raise HTTPException(
+            status_code=500, 
+            detail="Model is not loaded. Please run 'train_model.py' first or check for compatibility issues."
+        )
 
     try:
         raw_features = np.array([[
@@ -75,7 +116,7 @@ def recommend_crop(data: CropInput):
 # 🌿 DISEASE DIAGNOSIS
 @app.post("/diagnose_disease")
 async def diagnose_disease(file: UploadFile = File(...)):
-    if not GENAI_KEY:
+    if not GEMINI_API_KEY:
         raise HTTPException(status_code=500, detail="Gemini API Key missing.")
     
     try:
@@ -92,7 +133,7 @@ async def diagnose_disease(file: UploadFile = File(...)):
         Return response in clean JSON format.
         """
         
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content([prompt, image])
         return {"analysis": response.text}
     except Exception as e:
@@ -111,7 +152,7 @@ def ask_scheme(query: SchemeQuery):
         Be strictly factual. Do not invent subsidy amounts.
         """
         
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
         return {"response": response.text}
     except Exception as e:
