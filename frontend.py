@@ -43,7 +43,8 @@ def t(text):
 
 # --- MAIN HEADER ---
 st.markdown(f"<h1 style='text-align: center; color: #2E7D32;'>🌿 {t('Green Pulse AI')}</h1>", unsafe_allow_html=True)
-st.markdown(f"<h4 style='text-align: center; color: #555;'>* {t("Farmer's Smart Assistant for Crops, Diseases & Schemes")} *</h4>", unsafe_allow_html=True)
+farmer_text = "Farmer's Smart Assistant for Crops, Diseases & Schemes"
+st.markdown(f"<h4 style='text-align: center; color: #555;'>* {t(farmer_text)} *</h4>", unsafe_allow_html=True)
 st.divider()
 
 # --- NAVIGATION ---

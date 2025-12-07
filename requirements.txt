@@ -11,3 +11,6 @@ python-multipart
 google-generativeai
 python-dotenv
 pillow
+requests
+streamlit
+googletrans==4.0.0rc1
