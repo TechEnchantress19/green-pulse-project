@@ -7,9 +7,9 @@
 
 <div align="center">
   <video src="https://github.com/TechEnchantress19/green-pulse-project/blob/main/assests/Demo_vdo.mp4" width="100%" controls>
-
   </video>
 </div>
+
 **Green Pulse AI** is a high-precision, voice-enabled AI assistant designed to help farmers make data-driven decisions. It combines a state-of-the-art **Stacked Ensemble Machine Learning model** for crop recommendation with **Generative AI (Google Gemini)** for plant disease diagnosis and government scheme assistance.
 
 ##  Key Features
