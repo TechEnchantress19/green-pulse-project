@@ -6,7 +6,7 @@
 ![ML](https://img.shields.io/badge/Model-Stacked%20Ensemble-red)
 
 <div align="center">
-  <video src="https://github.com/user/repo/assets/12345/your-video-link.mp4" width="100%" controls>
+  <video src="https://github.com/TechEnchantress19/green-pulse-project/blob/main/assests/Demo_vdo.mp4" width="100%" controls>
 
   </video>
 </div>
