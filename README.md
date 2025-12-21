@@ -25,7 +25,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * **Backend Framework:** FastAPI (Python)
 * **Machine Learning:** Scikit-Learn, XGBoost, LightGBM
