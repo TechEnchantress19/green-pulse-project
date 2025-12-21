@@ -5,6 +5,11 @@
 ![AI](https://img.shields.io/badge/AI-Gemini%20Vision-orange)
 ![ML](https://img.shields.io/badge/Model-Stacked%20Ensemble-red)
 
+<div align="center">
+  <video src="https://github.com/user/repo/assets/12345/your-video-link.mp4" width="100%" controls>
+
+  </video>
+</div>
 **Green Pulse AI** is a high-precision, voice-enabled AI assistant designed to help farmers make data-driven decisions. It combines a state-of-the-art **Stacked Ensemble Machine Learning model** for crop recommendation with **Generative AI (Google Gemini)** for plant disease diagnosis and government scheme assistance.
 
 ##  Key Features
