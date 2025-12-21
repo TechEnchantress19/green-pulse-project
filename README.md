@@ -7,7 +7,7 @@
 
 **Green Pulse AI** is a high-precision, voice-enabled AI assistant designed to help farmers make data-driven decisions. It combines a state-of-the-art **Stacked Ensemble Machine Learning model** for crop recommendation with **Generative AI (Google Gemini)** for plant disease diagnosis and government scheme assistance.
 
-## 🚀 Key Features
+##  Key Features
 
 ### 1. High-Precision Crop Recommendation
 * **Technology:** Stacked Ensemble (Random Forest + XGBoost + LightGBM).
@@ -35,7 +35,7 @@
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```text
 green-pulse-project/
@@ -50,7 +50,7 @@ green-pulse-project/
     ├── label_encoder.joblib # Decodes class IDs to Crop Names
     └── scaler.joblib       # Standard Scaler for high precision
 ```
-⚡ Installation & Setup
+ Installation & Setup
 Follow these steps to set up the project locally.
 
 1. Clone the Repository
@@ -72,7 +72,7 @@ Since the trained model files are large and binary, they are not stored on GitHu
 ```
 python train_model.py
 ```
-Wait for the message: ✅ Model Trained!
+Wait for the message: Model Trained!
 
 5. Run the Server
 Start the FastAPI backend:
@@ -81,8 +81,8 @@ python main.py
 ```
 The server will start at http://0.0.0.0:8000.
 
-## 📖 API Usage
-Once the server is running, you can access the Interactive API Docs at: 👉 http://localhost:8000/docs
+## API Usage
+Once the server is running, you can access the Interactive API Docs at: http://localhost:8000/docs
 
 Endpoints
 ### 1. Recommend Crop
@@ -121,7 +121,7 @@ Body:
   "user_state": "Punjab"
 }
 ```
-## 🤝 Contributing
+## Contributing
 Contributions are welcome!
 
 #### 1. Fork the repository.
